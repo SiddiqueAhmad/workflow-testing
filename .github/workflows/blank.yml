@@ -44,5 +44,5 @@ jobs:
         shell: bash
         run: echo "BRANCH_NAME=$(echo ${GITHUB_HEAD_REF} | tr / -)" >> $GITHUB_ENV
 
-      - name: Debug
+      - name: Debug on pull request
         run: echo ${{ env.BRANCH_NAME }}          
