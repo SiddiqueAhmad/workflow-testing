@@ -32,8 +32,8 @@ jobs:
       # Runs a set of commands using the runners shell
       - name: Run a multi-line script
         run: |
-          val=`expr ${GITHUB_REF##*/} == 'main'`  
-          echo $val
+         echo ${GITHUB_REF##*/}
+          echo 12
       - name: Get branch name (merge)
         if: github.event_name != 'pull_request'
         shell: bash
@@ -44,5 +44,5 @@ jobs:
         shell: bash
         run: echo "BRANCH_NAME=$(echo ${GITHUB_HEAD_REF} | tr / -)" >> $GITHUB_ENV
 
-      - name: Debug
+      - name: Debug on pull request
         run: echo ${{ env.BRANCH_NAME }}          
