@@ -17,10 +17,6 @@ on:
 jobs:
   # This workflow contains a single job called "build"
   build:
-    env:
-      BRANCH: |
-        val=`expr ${GITHUB_REF##*/} == 'main'`
-        echo $val
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
 
@@ -36,5 +32,17 @@ jobs:
       # Runs a set of commands using the runners shell
       - name: Run a multi-line script
         run: |
-          val=`expr ${GITHUB_REF##*/} == 'main'`
+          val=`expr ${GITHUB_REF##*/} == 'main'`  
           echo $val
+      - name: Get branch name (merge)
+        if: github.event_name != 'pull_request'
+        shell: bash
+        run: echo "BRANCH_NAME=$(echo ${GITHUB_REF#refs/heads/} | tr / -)" >> $GITHUB_ENV
+
+      - name: Get branch name (pull request)
+        if: github.event_name == 'pull_request'
+        shell: bash
+        run: echo "BRANCH_NAME=$(echo ${GITHUB_HEAD_REF} | tr / -)" >> $GITHUB_ENV
+
+      - name: Debug
+        run: echo ${{ env.BRANCH_NAME }}          
